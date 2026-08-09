@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tamar Land Federal School - Grade 11 Physics Test</title>
+  
+  <!-- MathJax Configuration & Script for Physics Formulas -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --green-accent: #2e7d32;
+      --blue-accent: #0288d1;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-gradient);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 35px 25px;
+      max-width: 650px;
+      width: 100%;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .logo-img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 4px solid var(--green-accent);
+      cursor: pointer;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .logo-img:hover {
+      transform: scale(1.08);
+    }
+
+    h1 { color: var(--green-accent); margin: 15px 0 5px; font-size: 22px; }
+    h2 { color: var(--blue-accent); margin: 0 0 15px; font-size: 16px; font-weight: 500; }
+
+    .hidden { display: none !important; }
+
+    /* Timer Area */
+    .timer-card {
+      background: #e8f5e9;
+      border: 2px dashed var(--green-accent);
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+
+    .timer-display {
+      font-size: 26px;
+      font-weight: bold;
+      color: #2e7d32;
+      margin-top: 10px;
+    }
+
+    /* Input & Buttons */
+    input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      margin: 15px 0;
+      border: 2px solid #b2dfdb;
+      border-radius: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+      outline: none;
+      text-align: center;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--blue-accent);
+    }
+
+    .btn {
+      background: linear-gradient(45deg, var(--green-accent), var(--blue-accent));
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover { opacity: 0.9; }
+
+    /* Modal for Creator Code */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 380px;
+    }
+
+    /* Quiz Area */
+    .q-box {
+      text-align: left;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 5px solid var(--blue-accent);
+      margin-bottom: 15px;
+    }
+
+    .option-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: #ffffff;
+      border: 2px solid #e0e0e0;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .option-btn:hover {
+      border-color: var(--green-accent);
+      background: #f1f8e9;
+    }
+
+    .option-btn.active {
+      background: var(--green-accent);
+      color: white;
+      border-color: var(--green-accent);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header with Logo Link -->
+    <img src="https://lh3.googleusercontent.com/d/1ONsM5Dpe9GND9ybYi6chDzH8UW6MxyTG" 
+         alt="School Logo" class="logo-img" id="logoBtn" onclick="openModal()" title="Click for Creator Code">
+    
+    <h1>Tamar Land Federal School</h1>
+    <h2>Grade 11 Physics Assessment Test | Instructor: Sr Lynn</h2>
+
+    <!-- PAGE 1: Countdown Timer ONLY -->
+    <div id="pageTimer" class="timer-card">
+      <div style="font-size: 15px; color: #555;">စာမေးပွဲ စတင်ဖြေဆိုနိုင်ရန် ကျန်ရှိချိန်</div>
+      <div id="countdown" class="timer-display">Calculating...</div>
+    </div>
+
+    <!-- PAGE 2: Student Name Entry -->
+    <div id="pageName" class="hidden" style="margin-top: 20px;">
+      <label style="font-weight: bold; color: var(--green-accent);">စာဖြေသူ နာမည် ထည့်သွင်းပါ</label>
+      <input type="text" id="studentName" placeholder="ဥပမာ - မောင်မောင်">
+      <button class="btn" onclick="startQuiz()">ဖြေဆိုရန်</button>
+    </div>
+
+    <!-- PAGE 3: Question Display -->
+    <div id="pageQuiz" class="hidden">
+      <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px;">
+        <span id="qIndex">Question 1 of 50</span>
+        <span>Total Marks: 50</span>
+      </div>
+      
+      <div class="q-box">
+        <div id="qText" style="font-weight: 600; font-size: 16px;"></div>
+      </div>
+      <div id="optionsGroup"></div>
+
+      <button class="btn" id="nextBtn" onclick="nextQuestion()" style="margin-top: 15px;">နောက်တစ်ခု</button>
+    </div>
+
+    <!-- PAGE 4: Result Display -->
+    <div id="pageResult" class="hidden">
+      <h2 style="color: var(--green-accent); font-size: 22px;">ဖြေဆိုမှု ပြီးစီးပါပြီ!</h2>
+      <p id="resName" style="font-weight: bold; font-size: 18px;"></p>
+      <div style="font-size: 40px; color: var(--blue-accent); font-weight: bold; margin: 15px 0;">
+        <span id="resScore">0</span> / 50
+      </div>
+      <p style="font-size: 14px; color: #666;">အဖြေများကို Telegram သို့ ပေးပို့ပြီးပါပြီ။</p>
+    </div>
+  </div>
+
+  <!-- Creator Passcode Modal -->
+  <div id="codeModal" class="modal hidden">
+    <div class="modal-content">
+      <h3 style="margin-top: 0; color: var(--green-accent);">Creator Code ထည့်ပါ</h3>
+      <input type="text" id="passcode" placeholder="Enter Code (254007)">
+      <button class="btn" onclick="checkCode()">အတည်ပြုမည်</button>
+      <button class="btn" onclick="closeModal()" style="background: #9e9e9e; margin-top: 8px;">မလုပ်တော့ပါ</button>
+    </div>
+  </div>
+
+  <script>
+    // Config
+    const TARGET_DATE = new Date("2026-08-10T13:00:00+07:00").getTime();
+    const BOT_TOKEN = "8697252386:AAFMDrHyFlAPlKBTGgTsXbdj8AhpWTCEJX4";
+    const USER_ID = "5050699658";
+    const CREATOR_CODE = "254007";
+
+    let currentQ = 0;
+    let score = 0;
+    let selectedAnswers = [];
+    let studentNameStr = "";
+
+    // Questions Data (All Backslashes Escaped for Safe JS Parsing)
+    const questions = [
+      { q: "What is the simplest type of motion which can be encountered in many cases?", options: ["A) Three-dimensional motion", "B) One-dimensional motion", "C) Circular motion", "D) Projectile motion"], ans: 1 },
+      { q: "Which of the following is a key example of one-dimensional motion studied in Grade 10?", options: ["A) Projectile motion", "B) Free fall motion", "C) Circular motion", "D) Orbital motion"], ans: 1 },
+      { q: "Motion in two dimensions is also referred to as what?", options: ["A) Motion in a line", "B) Motion in space", "C) Motion in a plane", "D) Linear motion"], ans: 2 },
+      { q: "What mathematical concept must be used to describe the motion of an object in two dimensions?", options: ["A) Scalar concept", "B) Vector concept", "C) Matrix concept", "D) Logarithmic concept"], ans: 1 },
+      { q: "If an object moves along a curved path from point P to Q, the vector from P to Q is called the:", options: ["A) Average velocity vector", "B) Displacement vector", "C) Acceleration vector", "D) Tangential vector"], ans: 1 },
+      { q: "An object moving with constant speed along a curved path is accelerating because:", options: ["A) Its speed is changing", "B) Its mass is changing", "C) The direction of its velocity is changing", "D) Its kinetic energy is zero"], ans: 2 },
+      { q: "The direction of the instantaneous velocity of an object is always:", options: ["A) Perpendicular to its path", "B) Opposite to the direction of motion", "C) Tangential to its path", "D) Towards the center of the earth"], ans: 2 },
+      { q: "An object is accelerated whenever its velocity changes in:", options: ["A) Magnitude only", "B) Direction only", "C) Magnitude, direction, or both", "D) Neither magnitude nor direction"], ans: 2 },
+      { q: "A projectile is any object thrown into space upon which the only acting force is:", options: ["A) Air resistance", "B) Friction", "C) Tension", "D) Gravity"], ans: 3 },
+      { q: "The path followed by a projectile is known as a:", options: ["A) Orbit", "B) Trajectory", "C) Tangent", "D) Linear path"], ans: 1 },
+      { q: "Which of the following is given in the text as a real-life example of projectile motion?", options: ["A) A water fountain", "B) A car turning around a curve", "C) A bicycle moving at constant speed", "D) A satellite in orbit"], ans: 0 },
+      { q: "If air resistance is neglected, the horizontal acceleration ($a_x$) of a projectile is:", options: ["A) $9.8 \\text{ m s}^{-2}$", "B) Variable", "C) Zero", "D) Equal to $g$"], ans: 2 },
+      { q: "In projectile motion, the vertical motion of the projectile is considered a:", options: ["A) Uniform motion", "B) Free fall motion", "C) Circular motion", "D) Tangential motion"], ans: 1 },
+      { q: "The horizontal velocity ($v_x$) of a projectile during its entire flight:", options: ["A) Continuously increases", "B) Continuously decreases", "C) Remains constant", "D) Becomes zero at the peak"], ans: 2 },
+      { q: "A projectile reaches its highest point when its vertical component of velocity ($v_y$) is:", options: ["A) Maximum", "B) Equal to $v_x$", "C) Zero", "D) Negative"], ans: 2 },
+      { q: "The total time of flight ($T$) of a projectile is how many times the time taken to reach the maximum height ($t_1$)?", options: ["A) Equal to $t_1$", "B) Twice ($2t_1$)", "C) Three times ($3t_1$)", "D) Half of $t_1$"], ans: 1 },
+      { q: "The horizontal range $R$ is the horizontal distance from the starting point to the point where the projectile:", options: ["A) Reaches its maximum height", "B) Stops moving entirely", "C) Returns to the same height", "D) Hits the highest cliff"], ans: 2 },
+      { q: "Circular motion is a specific type of:", options: ["A) One-dimensional motion", "B) Two-dimensional motion", "C) Free fall motion", "D) Rectilinear motion"], ans: 1 },
+      { q: "The pulling force exerted on a ball tied to the end of a string when whirled in a circle is known as the:", options: ["A) Friction", "B) Tension", "C) Weight", "D) Normal force"], ans: 1 },
+      { q: "Which of the following is an example of an object undergoing circular motion in the text?", options: ["A) A water fountain jet", "B) A stone thrown upward at an angle", "C) A satellite orbiting the earth", "D) A bomb dropped from a horizontal plane"], ans: 2 },
+      { q: "Change of the angular position of an object moving in a circular path is called:", options: ["A) Angular displacement", "B) Arc length", "C) Tangential speed", "D) Angular speed"], ans: 0 },
+      { q: "Angular displacement is defined as the ratio of the:", options: ["A) Radius to arc length", "B) Arc length to radius", "C) Velocity to time", "D) Time to angle"], ans: 1 },
+      { q: "The magnitude of angular displacement ($\\theta$) is measured in which standard unit?", options: ["A) Degree", "B) Revolution", "C) Radian (rad)", "D) Meter"], ans: 2 },
+      { q: "One revolution ($1\\text{ rev}$) is equal to how many degrees?", options: ["A) $90^\\circ$", "B) $180^\\circ$", "C) $360^\\circ$", "D) $57.3^\\circ$"], ans: 2 },
+      { q: "One revolution ($1\\text{ rev}$) is equal to how many radians?", options: ["A) $\\pi \\text{ rad}$", "B) $2\\pi \\text{ rad}$", "C) $\\pi/2 \\text{ rad}$", "D) $4\\pi \\text{ rad}$"], ans: 1 },
+      { q: "Average angular velocity is the ratio of the change in angular displacement to the:", options: ["A) Radius of the path", "B) Linear distance traveled", "C) Time taken", "D) Tangential acceleration"], ans: 2 },
+      { q: "Instantaneous angular velocity is defined as the time rate of change of:", options: ["A) Angular displacement", "B) Angular acceleration", "C) Tangential velocity", "D) Arc length"], ans: 0 },
+      { q: "What are the units for measuring angular velocity as specified in the text?", options: ["A) $\\text{rad s}^{-1}$, rps, and rpm", "B) $\\text{m s}^{-1}$, $\\text{rad s}^{-2}$", "C) Degrees per meter", "D) Newton-meters per second"], ans: 0 },
+      { q: "The average angular acceleration ($\\bar{\\alpha}$) is given by the formula:", options: ["A) $\\Delta\\theta / \\Delta t$", "B) $\\Delta\\omega / \\Delta t$", "C) $v / r$", "D) $r \\times \\omega$"], ans: 1 },
+      { q: "What are the vector quantities mentioned in the note on Page 9?", options: ["A) Arc length and radius", "B) Angular velocity ($\\omega$) and angular acceleration ($\\alpha$)", "C) Time period and frequency", "D) Mass and speed"], ans: 1 },
+      { q: "What is the relation between the magnitude of tangential speed ($v$) and angular speed ($\\omega$) when radius ($r$) is constant?", options: ["A) $v = r / \\omega$", "B) $v = \\omega / r$", "C) $v = r \\omega$", "D) $v = r^2 \\omega$"], ans: 2 },
+      { q: "The unit of angular acceleration ($\\alpha$) is:", options: ["A) $\\text{rad s}^{-1}$", "B) $\\text{rad s}^{-2}$", "C) $\\text{rev min}^{-1}$", "D) $\\text{m s}^{-2}$"], ans: 1 },
+      { q: "Convert $60^\\circ$ into radians as shown in the text examples:", options: ["A) $\\pi/6 \\text{ rad}$", "B) $\\pi/4 \\text{ rad}$", "C) $\\pi/3 \\text{ rad}$", "D) $\\pi/2 \\text{ rad}$"], ans: 2 },
+      { q: "Convert $30^\\circ$ into radians as shown in the text examples:", options: ["A) $\\pi/6 \\text{ rad}$", "B) $\\pi/3 \\text{ rad}$", "C) $\\pi/2 \\text{ rad}$", "D) $\\pi \\text{ rad}$"], ans: 0 },
+      { q: "According to Example 1.6, an angular velocity of $45\\text{ rpm}$ (revolutions per minute) is equal to how many radians per second?", options: ["A) $45\\pi \\text{ rad s}^{-1}$", "B) $1.5\\pi \\text{ rad s}^{-1}$", "C) $2\\pi \\text{ rad s}^{-1}$", "D) $0.75\\pi \\text{ rad s}^{-1}$"], ans: 1 },
+      
+      // True / False Section (36 - 50)
+      { q: "In Grade 10, students studied two-dimensional motion such as linear motion and free fall motion.", options: ["True", "False"], ans: 1 },
+      { q: "The displacement vector of an object moving from P to Q in a plane is denoted as $\\Delta \\vec{r}$.", options: ["True", "False"], ans: 0 },
+      { q: "An object moving with a constant speed along a curved path has a constant velocity vector.", options: ["True", "False"], ans: 1 },
+      { q: "The horizontal motion of a projectile is treated as uniform motion because no horizontal force acts on it when air resistance is neglected.", options: ["True", "False"], ans: 0 },
+      { q: "In an object thrown horizontally from a cliff, there is no vertical component to its initial velocity ($v_{0y} = 0$).", options: ["True", "False"], ans: 0 },
+      { q: "The direction of linear acceleration $a$ in circular motion is always tangential to the path.", options: ["True", "False"], ans: 0 },
+      { q: "If the arc length $s$ is equal to the radius $r$ of the circle, the angular displacement is exactly $1\\text{ radian}$.", options: ["True", "False"], ans: 0 },
+      { q: "The instantaneous angular acceleration is defined as the time rate of change of angular velocity.", options: ["True", "False"], ans: 0 },
+      { q: "A bomb dropped from an airplane moving horizontally is an example of projectile motion.", options: ["True", "False"], ans: 0 },
+      { q: "When a body moves with a constant angular acceleration, its average angular acceleration equals its instantaneous angular acceleration.", options: ["True", "False"], ans: 0 },
+      { q: "Based on Example 1.2, if a soccer ball traverses a horizontal distance of $10\\text{ m}$ and a vertical distance of $3\\text{ m}$ in $3\\text{ s}$, the magnitude of its average velocity is exactly $3.48\\text{ m s}^{-1}$.", options: ["True", "False"], ans: 0 },
+      { q: "The formula for the maximum height reached by a projectile launched at an angle $\\theta_0$ is $H = (v_0 \\sin\\theta_0)^2 / g$.", options: ["True", "False"], ans: 1 },
+      { q: "According to Example 1.7, if the angular velocity of a rotating disc increases from $2\\text{ rad s}^{-1}$ to $5\\text{ rad s}^{-1}$ in $10\\text{ s}$, the average angular acceleration is $0.3\\text{ rad s}^{-2}$.", options: ["True", "False"], ans: 0 },
+      { q: "For a projectile thrown with initial speed $v_0$ at a launch angle $\\theta_0$, the formula for horizontal range is $R = v_0^2 \\sin(2\\theta_0) / g$.", options: ["True", "False"], ans: 0 },
+      { q: "According to Example 1.3, an object projected upward with a $30^\\circ$ launch angle and initial speed of $40\\text{ m s}^{-1}$ takes exactly $2.04\\text{ s}$ to reach the top of its trajectory under $g = 9.8\\text{ m s}^{-2}$.", options: ["True", "False"], ans: 0 }
+    ];
+
+    // Countdown System
+    const timerInterval = setInterval(updateTimer, 1000);
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const diff = TARGET_DATE - now;
+
+      if (diff <= 0) {
+        clearInterval(timerInterval);
+        showNamePage();
+      } else {
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+        document.getElementById("countdown").innerText = `${d}ရက် ${h}နာရီ ${m}မိနစ် ${s}စက္ကန့်`;
+      }
+    }
+
+    function showNamePage() {
+      document.getElementById("pageTimer").classList.add("hidden");
+      document.getElementById("pageName").classList.remove("hidden");
+    }
+
+    // Modal & Creator Code Logic
+    function openModal() {
+      document.getElementById("codeModal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("codeModal").classList.add("hidden");
+      document.getElementById("passcode").value = "";
+    }
+
+    function checkCode() {
+      const inputCode = document.getElementById("passcode").value.trim();
+      if (inputCode === CREATOR_CODE) {
+        alert("Creator Passcode အမှန်ဖြစ်ပါသည်။ စာမေးပွဲကို စတင်ပြင်ဆင်နိုင်ပါပြီ။");
+        closeModal();
+        clearInterval(timerInterval);
+        showNamePage();
+      } else {
+        alert("Passcode မှားယွင်းနေပါသည်။");
+      }
+    }
+
+    // Start Quiz
+    function startQuiz() {
+      const val = document.getElementById("studentName").value.trim();
+      if (!val) {
+        alert("ကျေးဇူးပြု၍ နာမည်ထည့်ပါ!");
+        return;
+      }
+      studentNameStr = val;
+      document.getElementById("pageName").classList.add("hidden");
+      document.getElementById("pageQuiz").classList.remove("hidden");
+      renderQuestion();
+    }
+
+    // Render Question with MathJax Typesetting
+    function renderQuestion() {
+      const item = questions[currentQ];
+      document.getElementById("qIndex").innerText = `Question ${currentQ + 1} of 50`;
+      document.getElementById("qText").innerHTML = `${currentQ + 1}. ${item.q}`;
+
+      const optionsGroup = document.getElementById("optionsGroup");
+      optionsGroup.innerHTML = "";
+
+      item.options.forEach((optText, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        if (selectedAnswers[currentQ] === idx) btn.classList.add("active");
+        btn.innerHTML = optText;
+        btn.onclick = () => {
+          selectedAnswers[currentQ] = idx;
+          const btns = optionsGroup.querySelectorAll(".option-btn");
+          btns.forEach((b, i) => b.classList.toggle("active", i === idx));
+        };
+        optionsGroup.appendChild(btn);
+      });
+
+      // Rerender MathJax formulas after injecting HTML
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([document.getElementById("pageQuiz")]).catch(function (err) {
+          console.log(err.message);
+        });
+      }
+    }
+
+    function nextQuestion() {
+      if (selectedAnswers[currentQ] === undefined) {
+        alert("အဖြေတစ်ခု ရွေးပေးပါဦး!");
+        return;
+      }
+
+      if (currentQ < questions.length - 1) {
+        currentQ++;
+        renderQuestion();
+      } else {
+        calculateScoreAndFinish();
+      }
+    }
+
+    function calculateScoreAndFinish() {
+      score = 0;
+      let msg = `📝 *Exam Answer Submission*\n`;
+      msg += `👤 *Student:* ${studentNameStr}\n`;
+      msg += `🏫 *School:* Tamar Land Federal School\n\n`;
+
+      questions.forEach((q, idx) => {
+        const userChoice = selectedAnswers[idx];
+        const isCorrect = userChoice === q.ans;
+        if (isCorrect) score++;
+        
+        let label = "";
+        if (q.options.length === 2) {
+          label = userChoice === 0 ? "True" : "False";
+        } else {
+          const labels = ["A", "B", "C", "D"];
+          label = labels[userChoice];
+        }
+        
+        msg += `Q${idx + 1}: ${label} ${isCorrect ? '✅' : '❌'}\n`;
+      });
+
+      msg += `\n📊 *Final Score:* ${score} / 50`;
+
+      // Display Result
+      document.getElementById("pageQuiz").classList.add("hidden");
+      document.getElementById("pageResult").classList.remove("hidden");
+      document.getElementById("resName").innerText = `ကျောင်းသား/သူ - ${studentNameStr}`;
+      document.getElementById("resScore").innerText = score;
+
+      // Send to Telegram
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: USER_ID,
+          text: msg,
+          parse_mode: "Markdown"
+        })
+      }).catch(err => console.error(err));
+    }
+  </script>
+</body>
+</html>
