@@ -20,7 +20,8 @@
 </div>
 <div id="codeModal" class="modal hidden"><div class="modalbox"><h3 style="color:var(--green)">Creator Code ထည့်ပါ</h3><input id="passcode" type="text" placeholder="Enter Creator Code"><button class="btn" onclick="checkCode()">အတည်ပြုမည်</button><button class="btn" onclick="closeModal()" style="margin-top:8px;background:#888">မလုပ်တော့ပါ</button></div></div>
 <script>
-const TARGET_DATE=new Date('2026-08-10T13:00:00+07:00').getTime();
+// Lock until 12 September 2026, 1:00 PM Myanmar Time (UTC+06:30)
+const TARGET_DATE=new Date('2026-09-12T13:00:00+06:30').getTime();
 let currentQ=0,score=0,selectedAnswers=[],studentNameStr='';
 const questions=[
 {q:'Which of the following physical quantities is defined as a scalar product of two vector quantities?',options:['A) Torque','B) Work done','C) Angular momentum','D) Linear momentum'],ans:1},
