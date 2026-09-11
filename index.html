@@ -1,447 +1,86 @@
 <!DOCTYPE html>
-<html lang="my">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tamar Land Federal School - Grade 11 Physics Test</title>
-  
-  <!-- MathJax Configuration & Script for Physics Formulas -->
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']]
-      },
-      svg: {
-        fontCache: 'global'
-      }
-    };
-  </script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-  <style>
-    :root {
-      --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      --card-bg: rgba(255, 255, 255, 0.95);
-      --green-accent: #2e7d32;
-      --blue-accent: #0288d1;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg-gradient);
-      margin: 0;
-      padding: 20px;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-sizing: border-box;
-    }
-
-    .container {
-      background: var(--card-bg);
-      border-radius: 20px;
-      padding: 35px 25px;
-      max-width: 650px;
-      width: 100%;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-      text-align: center;
-      box-sizing: border-box;
-    }
-
-    .logo-img {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      border: 4px solid var(--green-accent);
-      cursor: pointer;
-      object-fit: cover;
-      transition: transform 0.3s;
-    }
-
-    .logo-img:hover {
-      transform: scale(1.08);
-    }
-
-    h1 { color: var(--green-accent); margin: 15px 0 5px; font-size: 22px; }
-    h2 { color: var(--blue-accent); margin: 0 0 15px; font-size: 16px; font-weight: 500; }
-
-    .hidden { display: none !important; }
-
-    /* Timer Area */
-    .timer-card {
-      background: #e8f5e9;
-      border: 2px dashed var(--green-accent);
-      padding: 20px;
-      border-radius: 15px;
-      margin-top: 20px;
-    }
-
-    .timer-display {
-      font-size: 26px;
-      font-weight: bold;
-      color: #2e7d32;
-      margin-top: 10px;
-    }
-
-    /* Input & Buttons */
-    input[type="text"] {
-      width: 100%;
-      padding: 14px;
-      margin: 15px 0;
-      border: 2px solid #b2dfdb;
-      border-radius: 10px;
-      font-size: 16px;
-      box-sizing: border-box;
-      outline: none;
-      text-align: center;
-    }
-
-    input[type="text"]:focus {
-      border-color: var(--blue-accent);
-    }
-
-    .btn {
-      background: linear-gradient(45deg, var(--green-accent), var(--blue-accent));
-      color: white;
-      border: none;
-      padding: 14px 28px;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 10px;
-      cursor: pointer;
-      width: 100%;
-      transition: opacity 0.2s;
-    }
-
-    .btn:hover { opacity: 0.9; }
-
-    /* Modal for Creator Code */
-    .modal {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 380px;
-    }
-
-    /* Quiz Area */
-    .q-box {
-      text-align: left;
-      background: #f9f9f9;
-      padding: 20px;
-      border-radius: 10px;
-      border-left: 5px solid var(--blue-accent);
-      margin-bottom: 15px;
-    }
-
-    .option-btn {
-      display: block;
-      width: 100%;
-      text-align: left;
-      background: #ffffff;
-      border: 2px solid #e0e0e0;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    .option-btn:hover {
-      border-color: var(--green-accent);
-      background: #f1f8e9;
-    }
-
-    .option-btn.active {
-      background: var(--green-accent);
-      color: white;
-      border-color: var(--green-accent);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tamar Land Federal School - Grade 11 Physics Test</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{--bg:linear-gradient(135deg,#0f2027,#203a43,#2c5364);--green:#2e7d32;--blue:#0288d1}*{box-sizing:border-box}body{margin:0;padding:20px;min-height:100vh;display:flex;justify-content:center;align-items:center;font-family:Segoe UI,Tahoma,sans-serif;background:var(--bg)}.container{width:100%;max-width:720px;background:rgba(255,255,255,.96);border-radius:20px;padding:30px 24px;box-shadow:0 15px 35px rgba(0,0,0,.3);text-align:center}.logo{width:105px;height:105px;border-radius:50%;border:4px solid var(--green);object-fit:cover;cursor:pointer}.hidden{display:none!important}h1{font-size:22px;color:var(--green);margin:14px 0 5px}h2{font-size:16px;color:var(--blue);margin:0 0 18px}.timer{background:#e8f5e9;border:2px dashed var(--green);border-radius:15px;padding:22px;margin-top:20px}.count{font-size:28px;font-weight:800;color:var(--green);margin-top:10px}input{width:100%;padding:14px;margin:15px 0;border:2px solid #b2dfdb;border-radius:10px;font-size:16px;text-align:center;outline:none}.btn{width:100%;padding:14px 20px;border:0;border-radius:10px;background:linear-gradient(45deg,var(--green),var(--blue));color:white;font-size:16px;font-weight:700;cursor:pointer}.top{display:flex;justify-content:space-between;font-size:14px;margin-bottom:12px}.progress{height:7px;background:#e0e0e0;border-radius:10px;overflow:hidden;margin-bottom:16px}.bar{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));width:0;transition:width .25s}.qbox{text-align:left;background:#f8fafb;border-left:5px solid var(--blue);padding:18px;border-radius:10px;margin-bottom:15px;line-height:1.55}.qtext{font-weight:700;font-size:17px}.opt{display:block;width:100%;text-align:left;background:#fff;border:2px solid #e0e0e0;padding:13px;margin:8px 0;border-radius:9px;cursor:pointer;font-size:15px}.opt:hover{border-color:var(--green);background:#f1f8e9}.opt.active{background:var(--green);color:#fff;border-color:var(--green)}.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:20}.modalbox{background:#fff;width:90%;max-width:380px;padding:25px;border-radius:15px}.resultScore{font-size:46px;font-weight:800;color:var(--blue);margin:15px 0}.small{font-size:13px;color:#666}@media(max-width:520px){body{padding:10px}.container{padding:22px 15px}.logo{width:90px;height:90px}.qtext{font-size:16px}.opt{font-size:14px}}
+</style>
 </head>
-<body>
-
-  <div class="container">
-    <!-- Header with Logo Link -->
-    <img src="https://lh3.googleusercontent.com/d/1ONsM5Dpe9GND9ybYi6chDzH8UW6MxyTG" 
-         alt="School Logo" class="logo-img" id="logoBtn" onclick="openModal()" title="Click for Creator Code">
-    
-    <h1>Tamar Land Federal School</h1>
-    <h2>Grade 11 Physics Assessment Test | Instructor: Sr Lynn</h2>
-
-    <!-- PAGE 1: Countdown Timer ONLY -->
-    <div id="pageTimer" class="timer-card">
-      <div style="font-size: 15px; color: #555;">စာမေးပွဲ စတင်ဖြေဆိုနိုင်ရန် ကျန်ရှိချိန်</div>
-      <div id="countdown" class="timer-display">Calculating...</div>
-    </div>
-
-    <!-- PAGE 2: Student Name Entry -->
-    <div id="pageName" class="hidden" style="margin-top: 20px;">
-      <label style="font-weight: bold; color: var(--green-accent);">စာဖြေသူ နာမည် ထည့်သွင်းပါ</label>
-      <input type="text" id="studentName" placeholder="ဥပမာ - မောင်မောင်">
-      <button class="btn" onclick="startQuiz()">ဖြေဆိုရန်</button>
-    </div>
-
-    <!-- PAGE 3: Question Display -->
-    <div id="pageQuiz" class="hidden">
-      <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px;">
-        <span id="qIndex">Question 1 of 50</span>
-        <span>Total Marks: 50</span>
-      </div>
-      
-      <div class="q-box">
-        <div id="qText" style="font-weight: 600; font-size: 16px;"></div>
-      </div>
-      <div id="optionsGroup"></div>
-
-      <button class="btn" id="nextBtn" onclick="nextQuestion()" style="margin-top: 15px;">နောက်တစ်ခု</button>
-    </div>
-
-    <!-- PAGE 4: Result Display -->
-    <div id="pageResult" class="hidden">
-      <h2 style="color: var(--green-accent); font-size: 22px;">ဖြေဆိုမှု ပြီးစီးပါပြီ!</h2>
-      <p id="resName" style="font-weight: bold; font-size: 18px;"></p>
-      <div style="font-size: 40px; color: var(--blue-accent); font-weight: bold; margin: 15px 0;">
-        <span id="resScore">0</span> / 50
-      </div>
-      <p style="font-size: 14px; color: #666;">အဖြေများကို Telegram သို့ ပေးပို့ပြီးပါပြီ။</p>
-    </div>
-  </div>
-
-  <!-- Creator Passcode Modal -->
-  <div id="codeModal" class="modal hidden">
-    <div class="modal-content">
-      <h3 style="margin-top: 0; color: var(--green-accent);">Creator Code ထည့်ပါ</h3>
-      <input type="text" id="passcode" placeholder="Enter Code (254007)">
-      <button class="btn" onclick="checkCode()">အတည်ပြုမည်</button>
-      <button class="btn" onclick="closeModal()" style="background: #9e9e9e; margin-top: 8px;">မလုပ်တော့ပါ</button>
-    </div>
-  </div>
-
-  <script>
-    // Config
-    const TARGET_DATE = new Date("2026-08-10T13:00:00+07:00").getTime();
-    const BOT_TOKEN = "8697252386:AAFMDrHyFlAPlKBTGgTsXbdj8AhpWTCEJX4";
-    const USER_ID = "5050699658";
-    const CREATOR_CODE = "254007";
-
-    let currentQ = 0;
-    let score = 0;
-    let selectedAnswers = [];
-    let studentNameStr = "";
-
-    // Questions Data (All Backslashes Escaped for Safe JS Parsing)
-    const questions = [
-      { q: "What is the simplest type of motion which can be encountered in many cases?", options: ["A) Three-dimensional motion", "B) One-dimensional motion", "C) Circular motion", "D) Projectile motion"], ans: 1 },
-      { q: "Which of the following is a key example of one-dimensional motion studied in Grade 10?", options: ["A) Projectile motion", "B) Free fall motion", "C) Circular motion", "D) Orbital motion"], ans: 1 },
-      { q: "Motion in two dimensions is also referred to as what?", options: ["A) Motion in a line", "B) Motion in space", "C) Motion in a plane", "D) Linear motion"], ans: 2 },
-      { q: "What mathematical concept must be used to describe the motion of an object in two dimensions?", options: ["A) Scalar concept", "B) Vector concept", "C) Matrix concept", "D) Logarithmic concept"], ans: 1 },
-      { q: "If an object moves along a curved path from point P to Q, the vector from P to Q is called the:", options: ["A) Average velocity vector", "B) Displacement vector", "C) Acceleration vector", "D) Tangential vector"], ans: 1 },
-      { q: "An object moving with constant speed along a curved path is accelerating because:", options: ["A) Its speed is changing", "B) Its mass is changing", "C) The direction of its velocity is changing", "D) Its kinetic energy is zero"], ans: 2 },
-      { q: "The direction of the instantaneous velocity of an object is always:", options: ["A) Perpendicular to its path", "B) Opposite to the direction of motion", "C) Tangential to its path", "D) Towards the center of the earth"], ans: 2 },
-      { q: "An object is accelerated whenever its velocity changes in:", options: ["A) Magnitude only", "B) Direction only", "C) Magnitude, direction, or both", "D) Neither magnitude nor direction"], ans: 2 },
-      { q: "A projectile is any object thrown into space upon which the only acting force is:", options: ["A) Air resistance", "B) Friction", "C) Tension", "D) Gravity"], ans: 3 },
-      { q: "The path followed by a projectile is known as a:", options: ["A) Orbit", "B) Trajectory", "C) Tangent", "D) Linear path"], ans: 1 },
-      { q: "Which of the following is given in the text as a real-life example of projectile motion?", options: ["A) A water fountain", "B) A car turning around a curve", "C) A bicycle moving at constant speed", "D) A satellite in orbit"], ans: 0 },
-      { q: "If air resistance is neglected, the horizontal acceleration ($a_x$) of a projectile is:", options: ["A) $9.8 \\text{ m s}^{-2}$", "B) Variable", "C) Zero", "D) Equal to $g$"], ans: 2 },
-      { q: "In projectile motion, the vertical motion of the projectile is considered a:", options: ["A) Uniform motion", "B) Free fall motion", "C) Circular motion", "D) Tangential motion"], ans: 1 },
-      { q: "The horizontal velocity ($v_x$) of a projectile during its entire flight:", options: ["A) Continuously increases", "B) Continuously decreases", "C) Remains constant", "D) Becomes zero at the peak"], ans: 2 },
-      { q: "A projectile reaches its highest point when its vertical component of velocity ($v_y$) is:", options: ["A) Maximum", "B) Equal to $v_x$", "C) Zero", "D) Negative"], ans: 2 },
-      { q: "The total time of flight ($T$) of a projectile is how many times the time taken to reach the maximum height ($t_1$)?", options: ["A) Equal to $t_1$", "B) Twice ($2t_1$)", "C) Three times ($3t_1$)", "D) Half of $t_1$"], ans: 1 },
-      { q: "The horizontal range $R$ is the horizontal distance from the starting point to the point where the projectile:", options: ["A) Reaches its maximum height", "B) Stops moving entirely", "C) Returns to the same height", "D) Hits the highest cliff"], ans: 2 },
-      { q: "Circular motion is a specific type of:", options: ["A) One-dimensional motion", "B) Two-dimensional motion", "C) Free fall motion", "D) Rectilinear motion"], ans: 1 },
-      { q: "The pulling force exerted on a ball tied to the end of a string when whirled in a circle is known as the:", options: ["A) Friction", "B) Tension", "C) Weight", "D) Normal force"], ans: 1 },
-      { q: "Which of the following is an example of an object undergoing circular motion in the text?", options: ["A) A water fountain jet", "B) A stone thrown upward at an angle", "C) A satellite orbiting the earth", "D) A bomb dropped from a horizontal plane"], ans: 2 },
-      { q: "Change of the angular position of an object moving in a circular path is called:", options: ["A) Angular displacement", "B) Arc length", "C) Tangential speed", "D) Angular speed"], ans: 0 },
-      { q: "Angular displacement is defined as the ratio of the:", options: ["A) Radius to arc length", "B) Arc length to radius", "C) Velocity to time", "D) Time to angle"], ans: 1 },
-      { q: "The magnitude of angular displacement ($\\theta$) is measured in which standard unit?", options: ["A) Degree", "B) Revolution", "C) Radian (rad)", "D) Meter"], ans: 2 },
-      { q: "One revolution ($1\\text{ rev}$) is equal to how many degrees?", options: ["A) $90^\\circ$", "B) $180^\\circ$", "C) $360^\\circ$", "D) $57.3^\\circ$"], ans: 2 },
-      { q: "One revolution ($1\\text{ rev}$) is equal to how many radians?", options: ["A) $\\pi \\text{ rad}$", "B) $2\\pi \\text{ rad}$", "C) $\\pi/2 \\text{ rad}$", "D) $4\\pi \\text{ rad}$"], ans: 1 },
-      { q: "Average angular velocity is the ratio of the change in angular displacement to the:", options: ["A) Radius of the path", "B) Linear distance traveled", "C) Time taken", "D) Tangential acceleration"], ans: 2 },
-      { q: "Instantaneous angular velocity is defined as the time rate of change of:", options: ["A) Angular displacement", "B) Angular acceleration", "C) Tangential velocity", "D) Arc length"], ans: 0 },
-      { q: "What are the units for measuring angular velocity as specified in the text?", options: ["A) $\\text{rad s}^{-1}$, rps, and rpm", "B) $\\text{m s}^{-1}$, $\\text{rad s}^{-2}$", "C) Degrees per meter", "D) Newton-meters per second"], ans: 0 },
-      { q: "The average angular acceleration ($\\bar{\\alpha}$) is given by the formula:", options: ["A) $\\Delta\\theta / \\Delta t$", "B) $\\Delta\\omega / \\Delta t$", "C) $v / r$", "D) $r \\times \\omega$"], ans: 1 },
-      { q: "What are the vector quantities mentioned in the note on Page 9?", options: ["A) Arc length and radius", "B) Angular velocity ($\\omega$) and angular acceleration ($\\alpha$)", "C) Time period and frequency", "D) Mass and speed"], ans: 1 },
-      { q: "What is the relation between the magnitude of tangential speed ($v$) and angular speed ($\\omega$) when radius ($r$) is constant?", options: ["A) $v = r / \\omega$", "B) $v = \\omega / r$", "C) $v = r \\omega$", "D) $v = r^2 \\omega$"], ans: 2 },
-      { q: "The unit of angular acceleration ($\\alpha$) is:", options: ["A) $\\text{rad s}^{-1}$", "B) $\\text{rad s}^{-2}$", "C) $\\text{rev min}^{-1}$", "D) $\\text{m s}^{-2}$"], ans: 1 },
-      { q: "Convert $60^\\circ$ into radians as shown in the text examples:", options: ["A) $\\pi/6 \\text{ rad}$", "B) $\\pi/4 \\text{ rad}$", "C) $\\pi/3 \\text{ rad}$", "D) $\\pi/2 \\text{ rad}$"], ans: 2 },
-      { q: "Convert $30^\\circ$ into radians as shown in the text examples:", options: ["A) $\\pi/6 \\text{ rad}$", "B) $\\pi/3 \\text{ rad}$", "C) $\\pi/2 \\text{ rad}$", "D) $\\pi \\text{ rad}$"], ans: 0 },
-      { q: "According to Example 1.6, an angular velocity of $45\\text{ rpm}$ (revolutions per minute) is equal to how many radians per second?", options: ["A) $45\\pi \\text{ rad s}^{-1}$", "B) $1.5\\pi \\text{ rad s}^{-1}$", "C) $2\\pi \\text{ rad s}^{-1}$", "D) $0.75\\pi \\text{ rad s}^{-1}$"], ans: 1 },
-      
-      // True / False Section (36 - 50)
-      { q: "In Grade 10, students studied two-dimensional motion such as linear motion and free fall motion.", options: ["True", "False"], ans: 1 },
-      { q: "The displacement vector of an object moving from P to Q in a plane is denoted as $\\Delta \\vec{r}$.", options: ["True", "False"], ans: 0 },
-      { q: "An object moving with a constant speed along a curved path has a constant velocity vector.", options: ["True", "False"], ans: 1 },
-      { q: "The horizontal motion of a projectile is treated as uniform motion because no horizontal force acts on it when air resistance is neglected.", options: ["True", "False"], ans: 0 },
-      { q: "In an object thrown horizontally from a cliff, there is no vertical component to its initial velocity ($v_{0y} = 0$).", options: ["True", "False"], ans: 0 },
-      { q: "The direction of linear acceleration $a$ in circular motion is always tangential to the path.", options: ["True", "False"], ans: 0 },
-      { q: "If the arc length $s$ is equal to the radius $r$ of the circle, the angular displacement is exactly $1\\text{ radian}$.", options: ["True", "False"], ans: 0 },
-      { q: "The instantaneous angular acceleration is defined as the time rate of change of angular velocity.", options: ["True", "False"], ans: 0 },
-      { q: "A bomb dropped from an airplane moving horizontally is an example of projectile motion.", options: ["True", "False"], ans: 0 },
-      { q: "When a body moves with a constant angular acceleration, its average angular acceleration equals its instantaneous angular acceleration.", options: ["True", "False"], ans: 0 },
-      { q: "Based on Example 1.2, if a soccer ball traverses a horizontal distance of $10\\text{ m}$ and a vertical distance of $3\\text{ m}$ in $3\\text{ s}$, the magnitude of its average velocity is exactly $3.48\\text{ m s}^{-1}$.", options: ["True", "False"], ans: 0 },
-      { q: "The formula for the maximum height reached by a projectile launched at an angle $\\theta_0$ is $H = (v_0 \\sin\\theta_0)^2 / g$.", options: ["True", "False"], ans: 1 },
-      { q: "According to Example 1.7, if the angular velocity of a rotating disc increases from $2\\text{ rad s}^{-1}$ to $5\\text{ rad s}^{-1}$ in $10\\text{ s}$, the average angular acceleration is $0.3\\text{ rad s}^{-2}$.", options: ["True", "False"], ans: 0 },
-      { q: "For a projectile thrown with initial speed $v_0$ at a launch angle $\\theta_0$, the formula for horizontal range is $R = v_0^2 \\sin(2\\theta_0) / g$.", options: ["True", "False"], ans: 0 },
-      { q: "According to Example 1.3, an object projected upward with a $30^\\circ$ launch angle and initial speed of $40\\text{ m s}^{-1}$ takes exactly $2.04\\text{ s}$ to reach the top of its trajectory under $g = 9.8\\text{ m s}^{-2}$.", options: ["True", "False"], ans: 0 }
-    ];
-
-    // Countdown System
-    const timerInterval = setInterval(updateTimer, 1000);
-
-    function updateTimer() {
-      const now = new Date().getTime();
-      const diff = TARGET_DATE - now;
-
-      if (diff <= 0) {
-        clearInterval(timerInterval);
-        showNamePage();
-      } else {
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
-        document.getElementById("countdown").innerText = `${d}ရက် ${h}နာရီ ${m}မိနစ် ${s}စက္ကန့်`;
-      }
-    }
-
-    function showNamePage() {
-      document.getElementById("pageTimer").classList.add("hidden");
-      document.getElementById("pageName").classList.remove("hidden");
-    }
-
-    // Modal & Creator Code Logic
-    function openModal() {
-      document.getElementById("codeModal").classList.remove("hidden");
-    }
-
-    function closeModal() {
-      document.getElementById("codeModal").classList.add("hidden");
-      document.getElementById("passcode").value = "";
-    }
-
-    function checkCode() {
-      const inputCode = document.getElementById("passcode").value.trim();
-      if (inputCode === CREATOR_CODE) {
-        alert("Creator Passcode အမှန်ဖြစ်ပါသည်။ စာမေးပွဲကို စတင်ပြင်ဆင်နိုင်ပါပြီ။");
-        closeModal();
-        clearInterval(timerInterval);
-        showNamePage();
-      } else {
-        alert("Passcode မှားယွင်းနေပါသည်။");
-      }
-    }
-
-    // Start Quiz
-    function startQuiz() {
-      const val = document.getElementById("studentName").value.trim();
-      if (!val) {
-        alert("ကျေးဇူးပြု၍ နာမည်ထည့်ပါ!");
-        return;
-      }
-      studentNameStr = val;
-      document.getElementById("pageName").classList.add("hidden");
-      document.getElementById("pageQuiz").classList.remove("hidden");
-      renderQuestion();
-    }
-
-    // Render Question with MathJax Typesetting
-    function renderQuestion() {
-      const item = questions[currentQ];
-      document.getElementById("qIndex").innerText = `Question ${currentQ + 1} of 50`;
-      document.getElementById("qText").innerHTML = `${currentQ + 1}. ${item.q}`;
-
-      const optionsGroup = document.getElementById("optionsGroup");
-      optionsGroup.innerHTML = "";
-
-      item.options.forEach((optText, idx) => {
-        const btn = document.createElement("button");
-        btn.className = "option-btn";
-        if (selectedAnswers[currentQ] === idx) btn.classList.add("active");
-        btn.innerHTML = optText;
-        btn.onclick = () => {
-          selectedAnswers[currentQ] = idx;
-          const btns = optionsGroup.querySelectorAll(".option-btn");
-          btns.forEach((b, i) => b.classList.toggle("active", i === idx));
-        };
-        optionsGroup.appendChild(btn);
-      });
-
-      // Rerender MathJax formulas after injecting HTML
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        MathJax.typesetPromise([document.getElementById("pageQuiz")]).catch(function (err) {
-          console.log(err.message);
-        });
-      }
-    }
-
-    function nextQuestion() {
-      if (selectedAnswers[currentQ] === undefined) {
-        alert("အဖြေတစ်ခု ရွေးပေးပါဦး!");
-        return;
-      }
-
-      if (currentQ < questions.length - 1) {
-        currentQ++;
-        renderQuestion();
-      } else {
-        calculateScoreAndFinish();
-      }
-    }
-
-    function calculateScoreAndFinish() {
-      score = 0;
-      let msg = `📝 *Exam Answer Submission*\n`;
-      msg += `👤 *Student:* ${studentNameStr}\n`;
-      msg += `🏫 *School:* Tamar Land Federal School\n\n`;
-
-      questions.forEach((q, idx) => {
-        const userChoice = selectedAnswers[idx];
-        const isCorrect = userChoice === q.ans;
-        if (isCorrect) score++;
-        
-        let label = "";
-        if (q.options.length === 2) {
-          label = userChoice === 0 ? "True" : "False";
-        } else {
-          const labels = ["A", "B", "C", "D"];
-          label = labels[userChoice];
-        }
-        
-        msg += `Q${idx + 1}: ${label} ${isCorrect ? '✅' : '❌'}\n`;
-      });
-
-      msg += `\n📊 *Final Score:* ${score} / 50`;
-
-      // Display Result
-      document.getElementById("pageQuiz").classList.add("hidden");
-      document.getElementById("pageResult").classList.remove("hidden");
-      document.getElementById("resName").innerText = `ကျောင်းသား/သူ - ${studentNameStr}`;
-      document.getElementById("resScore").innerText = score;
-
-      // Send to Telegram
-      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: USER_ID,
-          text: msg,
-          parse_mode: "Markdown"
-        })
-      }).catch(err => console.error(err));
-    }
-  </script>
-</body>
-</html>
+<body><div class="container">
+<img class="logo" src="https://lh3.googleusercontent.com/d/1ONsM5Dpe9GND9ybYi6chDzH8UW6MxyTG" alt="School Logo" onclick="openModal()">
+<h1>Tamar Land Federal School</h1><h2>Grade 11 Physics Assessment Test | Instructor: Sr Lynn</h2>
+<div id="pageTimer" class="timer"><div>စာမေးပွဲ စတင်ဖြေဆိုနိုင်ရန် ကျန်ရှိချိန်</div><div id="countdown" class="count">Calculating...</div></div>
+<div id="pageName" class="hidden"><label><b>စာဖြေသူ နာမည် ထည့်သွင်းပါ</b></label><input id="studentName" type="text" placeholder="ဥပမာ - မောင်မောင်"><button class="btn" onclick="startQuiz()">ဖြေဆိုရန်</button></div>
+<div id="pageQuiz" class="hidden"><div class="top"><span id="qIndex">Question 1 of 50</span><span>Total Marks: 50</span></div><div class="progress"><div id="progressBar" class="bar"></div></div><div class="qbox"><div id="qText" class="qtext"></div></div><div id="optionsGroup"></div><button id="nextBtn" class="btn" onclick="nextQuestion()">နောက်တစ်ခု</button></div>
+<div id="pageResult" class="hidden"><h2 style="font-size:22px;color:var(--green)">ဖြေဆိုမှု ပြီးစီးပါပြီ!</h2><p id="resName" style="font-weight:700;font-size:18px"></p><div class="resultScore"><span id="resScore">0</span> / 50</div><p class="small">Result ကို ဒီစာမျက်နှာမှာ ပြသထားပါသည်။</p></div>
+</div>
+<div id="codeModal" class="modal hidden"><div class="modalbox"><h3 style="color:var(--green)">Creator Code ထည့်ပါ</h3><input id="passcode" type="text" placeholder="Enter Creator Code"><button class="btn" onclick="checkCode()">အတည်ပြုမည်</button><button class="btn" onclick="closeModal()" style="margin-top:8px;background:#888">မလုပ်တော့ပါ</button></div></div>
+<script>
+const TARGET_DATE=new Date('2026-08-10T13:00:00+07:00').getTime();
+let currentQ=0,score=0,selectedAnswers=[],studentNameStr='';
+const questions=[
+{q:'Which of the following physical quantities is defined as a scalar product of two vector quantities?',options:['A) Torque','B) Work done','C) Angular momentum','D) Linear momentum'],ans:1},
+{q:'If two vectors A and B are perpendicular to each other, their scalar product A · B is equal to:',options:['A) AB','B) AB sin θ','C) Zero','D) -AB'],ans:2},
+{q:'The magnitude of the vector product of two vectors A and B inclined at an angle θ is given by:',options:['A) AB cos θ','B) AB sin θ','C) AB tan θ','D) AB / sin θ'],ans:1},
+{q:'What is the direction of the vector product τ = r × F relative to vectors r and F?',options:['A) Parallel to r','B) Parallel to F','C) Perpendicular to both r and F','D) At an angle of 45° to both'],ans:2},
+{q:'The turning effect of a force applied to a body about a pivot or fulcrum is called:',options:['A) Angular displacement','B) Torque or moment of force','C) Moment of inertia','D) Angular impulse'],ans:1},
+{q:'The SI unit of moment of force (torque) is:',options:['A) Joule (J)','B) Newton (N)','C) Newton-metre (N m)','D) kg m²'],ans:2},
+{q:'The perpendicular distance from the line of action of the force to the fulcrum is known as the:',options:['A) Radius of gyration','B) Moment arm','C) Axis of rotation','D) Displacement vector'],ans:1},
+{q:'A force of 20 N is applied perpendicularly to a door at a distance of 0.8 m from the hinges. The torque produced is:',options:['A) 16 N m','B) 25 N m','C) 12.5 N m','D) 20.8 N m'],ans:0},
+{q:'Torque is maximum when the angle θ between the position vector r and force F is:',options:['A) 0°','B) 45°','C) 90°','D) 180°'],ans:2},
+{q:'The rotational analogue of mass in linear motion is:',options:['A) Torque','B) Angular momentum','C) Moment of inertia','D) Angular acceleration'],ans:2},
+{q:'What is the SI unit of moment of inertia?',options:['A) kg m','B) kg m²','C) N m','D) kg m s⁻¹'],ans:1},
+{q:'Moment of inertia is a:',options:['A) Vector quantity','B) Scalar quantity','C) Fundamental quantity','D) Dimensionless ratio'],ans:1},
+{q:'The formula for the moment of inertia of a system of particles is:',options:['A) I = ∑ mᵢ rᵢ','B) I = ∑ mᵢ rᵢ²','C) I = ∑ mᵢ² rᵢ','D) I = ½ ∑ mᵢ rᵢ²'],ans:1},
+{q:'Relation between torque (τ), moment of inertia (I), and angular acceleration (α) is given by:',options:['A) τ = I / α','B) τ = I α','C) τ = I ω','D) τ = I α²'],ans:1},
+{q:'The moment of inertia of a solid cylinder or uniform disk of mass M and radius R about its central axis is:',options:['A) MR²','B) ½ MR²','C) ⅓ MR²','D) ⅖ MR²'],ans:1},
+{q:'The moment of inertia of a solid sphere of mass M and radius R about an axis passing through its centre is:',options:['A) ⅖ MR²','B) ½ MR²','C) ⅔ MR²','D) MR²'],ans:0},
+{q:'For a long thin rod of length L and mass M, the moment of inertia about an axis through its centre is:',options:['A) ⅓ ML²','B) 1/12 ML²','C) ½ ML²','D) ML²'],ans:1},
+{q:'For the same long thin rod of length L, if the axis of rotation is shifted to one end, the moment of inertia becomes:',options:['A) 1/12 ML²','B) ⅓ ML²','C) ⅙ ML²','D) ¼ ML²'],ans:1},
+{q:'Two point masses of 1 kg and 5 kg are connected by a light rigid rod at distances of 20 cm and 30 cm from the rotation axis respectively. The total moment of inertia of the system is:',options:['A) 0.49 kg m²','B) 0.29 kg m²','C) 1.49 kg m²','D) 0.09 kg m²'],ans:0},
+{q:'The point at which all the weight of an object may be considered to act is called the:',options:['A) Fulcrum','B) Centre of gravity','C) Axis of symmetry','D) Moment arm'],ans:1},
+{q:'For a uniform metre stick, where is its centre of gravity located?',options:['A) At 0 cm mark','B) At 25 cm mark','C) At 50 cm mark','D) At 100 cm mark'],ans:2},
+{q:'A body is in translational equilibrium when:',options:['A) Sum of external torques is zero','B) Sum of external forces is zero','C) Angular velocity is constant','D) Moment of inertia is constant'],ans:1},
+{q:'The first condition of equilibrium is mathematically written as:',options:['A) ∑ τ = 0','B) ∑ F = 0','C) ∑ L = 0','D) ∑ I = 0'],ans:1},
+{q:'The second condition of equilibrium ensures that the object has no:',options:['A) Linear acceleration','B) Rotational acceleration','C) Mass','D) Velocity'],ans:1},
+{q:'A rigid body is in complete mechanical equilibrium if:',options:['A) Only ∑ F = 0','B) Only ∑ τ = 0','C) Both ∑ F = 0 and ∑ τ = 0','D) ∑ F = ∑ τ'],ans:2},
+{q:'Angular momentum (L) of a rotating rigid body with moment of inertia I and angular velocity ω is given by:',options:['A) L = I / ω','B) L = I ω','C) L = I ω²','D) L = ½ I ω²'],ans:1},
+{q:'In vector form, angular momentum L of a particle with linear momentum p and position vector r is:',options:['A) L = r · p','B) L = r × p','C) L = p × r','D) L = r / p'],ans:1},
+{q:'The SI unit of angular momentum is:',options:['A) kg m s⁻¹','B) kg m² s⁻¹','C) N m s⁻¹','D) kg m² s⁻²'],ans:1},
+{q:'Which of the following is equivalent to the unit of angular momentum?',options:['A) J s','B) J / s','C) N s','D) W s'],ans:0},
+{q:'According to the law of conservation of angular momentum, angular momentum remains constant if:',options:['A) Net external force is zero','B) Net external torque is zero','C) Moment of inertia is zero','D) Angular speed is constant'],ans:1},
+{q:'When a spinning ice skater pulls her arms inward, her moment of inertia decreases. What happens to her angular speed?',options:['A) Decreases','B) Increases','C) Remains the same','D) Becomes zero'],ans:1},
+{q:'If I₁ and I₂ are initial and final moments of inertia, and ω₁, ω₂ are initial and final angular speeds, conservation of angular momentum states:',options:['A) I₁ ω₁ = I₂ ω₂','B) I₁ / ω₁ = I₂ / ω₂','C) I₁ ω₁² = I₂ ω₂²','D) I₁ + ω₁ = I₂ + ω₂'],ans:0},
+{q:'If the dot product of two non-zero vectors A and B is equal to zero, then:',options:['A) A and B are parallel','B) A and B are perpendicular','C) A and B are equal','D) Angle between them is 180°'],ans:1},
+{q:'If A × B = 0 for two non-zero vectors, the angle between them is:',options:['A) 0° or 180°','B) 90°','C) 45°','D) 60°'],ans:0},
+{q:'A wheel of moment of inertia 2 kg m² is rotating at an angular speed of 10 rad s⁻¹. Its angular momentum is:',options:['A) 5 kg m² s⁻¹','B) 20 kg m² s⁻¹','C) 10 kg m² s⁻¹','D) 40 kg m² s⁻¹'],ans:1},
+{q:'If a constant torque of 10 N m acts on a body for 3 seconds, the change in angular momentum of the body is:',options:['A) 30 kg m² s⁻¹','B) 3.33 kg m² s⁻¹','C) 13 kg m² s⁻¹','D) 300 kg m² s⁻¹'],ans:0},
+{q:'Rate of change of angular momentum of a system is equal to the net external:',options:['A) Force','B) Torque','C) Work','D) Power'],ans:1},
+{q:'A disk of mass 4 kg and radius 0.5 m rotates about its central axis. Its moment of inertia is:',options:['A) 0.5 kg m²','B) 1.0 kg m²','C) 0.25 kg m²','D) 2.0 kg m²'],ans:0},
+{q:'A thin spherical shell (hollow sphere) has a larger moment of inertia than a solid sphere of the same mass and radius because:',options:['A) Its mass is concentrated further from the axis','B) Its mass is closer to the axis','C) It has less total weight','D) Its density is uniform'],ans:0},
+{q:'In rotational motion, the work done by a torque τ through an angular displacement θ is given by:',options:['A) W = τ / θ','B) W = τ θ','C) W = τ θ²','D) W = ½ τ θ'],ans:1},
+{q:'If a force F passes directly through the axis of rotation, the moment arm d is zero, so the resulting torque is:',options:['A) Maximum','B) Zero','C) Infinite','D) Equal to F'],ans:1},
+{q:'Why is it easier to open a heavy door by pushing at the outer edge rather than near the hinges?',options:['A) The moment arm r is larger','B) The force applied becomes smaller','C) The moment of inertia decreases','D) Friction at hinges vanishes'],ans:0},
+{q:'A rod of mass 3 kg and length 2 m rotates about an axis passing through its centre perpendicular to its length. Its moment of inertia is:',options:['A) 1 kg m²','B) 4 kg m²','C) 12 kg m²','D) 3 kg m²'],ans:0},
+{q:'A flywheel accelerates from rest to an angular velocity of 20 rad s⁻¹ in 4 seconds under a constant torque. Its angular acceleration α is:',options:['A) 80 rad s⁻²','B) 5 rad s⁻²','C) 16 rad s⁻²','D) 2.5 rad s⁻²'],ans:1},
+{q:'What torque is required to give the flywheel in Q44 (moment of inertia I = 3 kg m²) an angular acceleration of 5 rad s⁻²?',options:['A) 15 N m','B) 0.6 N m','C) 8 N m','D) 45 N m'],ans:0},
+{q:'An object of regular shape and uniform density has its centre of gravity located at its:',options:['A) Top edge','B) Geometrical centre','C) Bottom base','D) Outer boundary'],ans:1},
+{q:'The cross product of a vector with itself, A × A, is always:',options:['A) A²','B) Zero vector','C) 1','D) 2A'],ans:1},
+{q:'The scalar product of a vector with itself, A · A, is equal to:',options:['A) Zero','B) A²','C) 1','D) 2A'],ans:1},
+{q:'A diver tucks her body in during a dive to decrease her moment of inertia. This action causes her to:',options:['A) Spin faster (increase angular speed)','B) Spin slower (decrease angular speed)','C) Stop spinning','D) Increase total weight'],ans:0},
+{q:'Complete rotational and translational equilibrium of a rigid body requires both net force and net torque to be:',options:['A) Maximum','B) Equal to mass','C) Zero','D) Constant positive numbers'],ans:2}
+];
+function show(id){['pageTimer','pageName','pageQuiz','pageResult'].forEach(x=>document.getElementById(x).classList.add('hidden'));document.getElementById(id).classList.remove('hidden')}
+function updateCountdown(){const diff=TARGET_DATE-Date.now();if(diff<=0){clearInterval(timer);document.getElementById('countdown').textContent='စာမေးပွဲ စတင်နိုင်ပါပြီ';show('pageName');return}const d=Math.floor(diff/86400000),h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60,s=Math.floor(diff/1000)%60;document.getElementById('countdown').textContent=`${d}d ${h}h ${m}m ${s}s`}
+const timer=setInterval(updateCountdown,1000);updateCountdown();
+function startQuiz(){studentNameStr=document.getElementById('studentName').value.trim();if(!studentNameStr){alert('နာမည်ထည့်ပါ');return}currentQ=0;score=0;selectedAnswers=[];show('pageQuiz');renderQuestion()}
+function renderQuestion(){const item=questions[currentQ];document.getElementById('qIndex').textContent=`Question ${currentQ+1} of ${questions.length}`;document.getElementById('progressBar').style.width=((currentQ+1)/questions.length*100)+'%';document.getElementById('qText').innerHTML=item.q;const group=document.getElementById('optionsGroup');group.innerHTML='';item.options.forEach((opt,i)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=opt;b.onclick=()=>selectOption(i);group.appendChild(b)});document.getElementById('nextBtn').textContent=currentQ===questions.length-1?'အဖြေတင်မည်':'နောက်တစ်ခု';if(window.MathJax)MathJax.typesetPromise()}
+function selectOption(i){selectedAnswers[currentQ]=i;document.querySelectorAll('.opt').forEach((b,n)=>b.classList.toggle('active',n===i))}
+function nextQuestion(){if(selectedAnswers[currentQ]===undefined){alert('အဖြေတစ်ခုရွေးပါ');return}if(selectedAnswers[currentQ]===questions[currentQ].ans)score++;if(currentQ<questions.length-1){currentQ++;renderQuestion()}else finishQuiz()}
+function finishQuiz(){show('pageResult');document.getElementById('resName').textContent=studentNameStr;document.getElementById('resScore').textContent=score;}
+function openModal(){document.getElementById('codeModal').classList.remove('hidden')}function closeModal(){document.getElementById('codeModal').classList.add('hidden')}function checkCode(){if(document.getElementById('passcode').value==='254007'){alert('Creator access confirmed.');closeModal()}else alert('Code မှားနေပါသည်။')}
+</script></body></html>
