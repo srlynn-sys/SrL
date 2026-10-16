@@ -40,7 +40,7 @@ el("loginForm").addEventListener("submit", async e => {
   catch(err) { el("loginStatus").textContent = "Login မအောင်မြင်ပါ: " + err.message; }
 });
 onAuthStateChanged(auth, async user => {
-  const allowed = user && ADMIN_EMAIL !== "thitlinn680@gmail.com" && user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  const allowed = !!user && user.email?.trim().toLowerCase() === ADMIN_EMAIL.trim().toLowerCase();
   el("loginPanel").classList.toggle("hidden", !!allowed);
   el("adminPanel").classList.toggle("hidden", !allowed);
   if (user && !allowed) { el("loginStatus").textContent = "ဒီအကောင့်မှာ Admin ခွင့်မရှိပါ။"; await signOut(auth); return; }
