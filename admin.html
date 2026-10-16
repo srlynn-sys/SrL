@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SrL Admin Panel</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:18px;min-height:100vh;background:linear-gradient(135deg,#102a43,#176b87);font-family:system-ui,"Segoe UI",sans-serif;color:#172b4d}.wrap{max-width:1000px;margin:auto}.panel{background:#fff;border-radius:18px;padding:22px;margin:14px 0;box-shadow:0 12px 28px #001b2c40}h1{margin:0;color:#176b87;font-size:25px}h2{font-size:19px;margin-top:0}input{width:100%;padding:12px;border:1px solid #ccd6e0;border-radius:9px;margin:7px 0 12px;font-size:16px}button{border:0;border-radius:9px;padding:11px 15px;background:#176b87;color:#fff;font-weight:700;cursor:pointer;margin:3px}button.danger{background:#b42318}button.light{background:#e8eef3;color:#172b4d}.muted{color:#617386;font-size:13px}.status{margin-top:12px;white-space:pre-wrap}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row input{flex:1;min-width:180px}.result{border:1px solid #dce5ec;border-radius:10px;padding:12px;margin:9px 0;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.hidden{display:none!important}@media(max-width:500px){body{padding:10px}.panel{padding:16px}h1{font-size:22px}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="panel"><h1>SrL — Admin Panel</h1><p class="muted">Exam Results Management · ဆရာအတွက်သာ</p><a href="./index.html">← Public Test / ရမှတ်စစ်ရန်</a></header>
+<section id="loginPanel" class="panel"><h2>Teacher Login</h2><p class="muted">Firebase Authentication မှာ ဖန်တီးထားတဲ့ ဆရာ့ Email/Password ကိုသုံးပါ။</p>
+<form id="loginForm"><label>Email</label><input id="email" type="email" autocomplete="username" required><label>Password</label><input id="password" type="password" autocomplete="current-password" required><button type="submit">Login</button></form><div id="loginStatus" class="status"></div></section>
+<section id="adminPanel" class="panel hidden"><div class="row" style="justify-content:space-between"><h2>ရလဒ်များ</h2><button id="logoutBtn" class="light">Logout</button></div>
+<div class="row"><input id="filterName" placeholder="နာမည်ဖြင့်ရှာရန်"><button id="refreshBtn">Refresh</button></div>
+<p id="summary" class="muted">ရလဒ်များကို ဖတ်နေပါသည်...</p><div id="resultsList"></div>
+<hr><h2>Reset All</h2><p>ရလဒ်အားလုံးကို ဖျက်မည်။ ပြန်ယူ၍မရနိုင်ပါ။</p><button id="resetAllBtn" class="danger">Reset All Results</button><div id="adminStatus" class="status"></div></section>
+</main>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyAF1V9gzoq66vsCULVQysiosbZUkUxI3tM",
+  authDomain: "tamar-lann.firebaseapp.com",
+  projectId: "tamar-lann",
+  storageBucket: "tamar-lann.firebasestorage.app",
+  messagingSenderId: "481640631294",
+  appId: "1:481640631294:web:cdb00c873794ef917f8eaf",
+  measurementId: "G-RVY44NKHTS"
+};
+// Replace with the exact teacher email used in Firebase Authentication.
+const ADMIN_EMAIL = "replace-with-your-teacher-email@example.com";
+const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app);
+const el = id => document.getElementById(id);
+let allResults = [];
+el("loginForm").addEventListener("submit", async e => {
+  e.preventDefault(); el("loginStatus").textContent = "Logging in...";
+  try { await signInWithEmailAndPassword(auth, el("email").value.trim(), el("password").value); }
+  catch(err) { el("loginStatus").textContent = "Login မအောင်မြင်ပါ: " + err.message; }
+});
+onAuthStateChanged(auth, async user => {
+  const allowed = user && ADMIN_EMAIL !== "replace-with-your-teacher-email@example.com" && user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  el("loginPanel").classList.toggle("hidden", !!allowed);
+  el("adminPanel").classList.toggle("hidden", !allowed);
+  if (user && !allowed) { el("loginStatus").textContent = "ဒီအကောင့်မှာ Admin ခွင့်မရှိပါ။"; await signOut(auth); return; }
+  if (allowed) await loadResults();
+});
+el("logoutBtn").addEventListener("click", () => signOut(auth));
+el("refreshBtn").addEventListener("click", loadResults);
+el("filterName").addEventListener("input", renderResults);
+async function loadResults() {
+  el("summary").textContent = "ရလဒ်များကို ဖတ်နေပါသည်...";
+  try {
+    const snap = await getDocs(query(collection(db, "examResults"), orderBy("createdAt", "desc")));
+    allResults = snap.docs.map(d => ({id:d.id, ...d.data()}));
+    renderResults();
+  } catch(err) { el("summary").textContent = "ရလဒ်မဖတ်နိုင်ပါ။ Firestore Security Rules ကို စစ်ပါ။ " + err.message; }
+}
+function renderResults() {
+  const term = el("filterName").value.trim().toLocaleLowerCase();
+  const items = allResults.filter(x => (x.studentName || "").toLocaleLowerCase().includes(term));
+  el("summary").textContent = items.length + " result(s)";
+  const list = el("resultsList"); list.replaceChildren();
+  if (!items.length) { list.textContent = "ရလဒ်မတွေ့ပါ။"; return; }
+  items.forEach(item => {
+    const row = document.createElement("div"); row.className = "result";
+    const info = document.createElement("div");
+    const name = document.createElement("strong"); name.textContent = item.studentName || "(No name)";
+    const score = document.createElement("div"); score.textContent = "Score: " + item.score + " / " + (item.total || 50);
+    const date = document.createElement("div"); date.className = "muted"; date.textContent = item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString() : "Date unavailable";
+    info.append(name, score, date);
+    const btn = document.createElement("button"); btn.className = "danger"; btn.textContent = "Reset Individual";
+    btn.addEventListener("click", async () => {
+      if (!confirm((item.studentName || "ဒီရလဒ်") + " ကို ဖျက်မှာသေချာပါသလား?")) return;
+      try { await deleteDoc(doc(db, "examResults", item.id)); allResults = allResults.filter(x => x.id !== item.id); renderResults(); el("adminStatus").textContent = "ရလဒ်တစ်ခုကို Reset လုပ်ပြီးပါပြီ။"; }
+      catch(err) { el("adminStatus").textContent = "Reset မအောင်မြင်ပါ: " + err.message; }
+    });
+    row.append(info, btn); list.append(row);
+  });
+}
+el("resetAllBtn").addEventListener("click", async () => {
+  if (!confirm("ရလဒ်အားလုံး (" + allResults.length + " ခု) ကို ဖျက်မှာသေချာပါသလား?")) return;
+  el("adminStatus").textContent = "Reset လုပ်နေပါသည်...";
+  try {
+    for (let i=0;i<allResults.length;i+=400) {
+      await Promise.all(allResults.slice(i,i+400).map(item => deleteDoc(doc(db,"examResults",item.id))));
+    }
+    allResults=[]; renderResults(); el("adminStatus").textContent = "ရလဒ်အားလုံးကို Reset လုပ်ပြီးပါပြီ။";
+  } catch(err) { el("adminStatus").textContent = "Reset မအောင်မြင်ပါ: " + err.message; }
+});
+</script></body></html>
