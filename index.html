@@ -18,6 +18,73 @@
 <div id="pageQuiz" class="hidden"><div class="top"><span id="qIndex">Question 1 of 50</span><span>Total Marks: 50</span></div><div class="progress"><div id="progressBar" class="bar"></div></div><div class="qbox"><div id="qText" class="qtext"></div></div><div id="optionsGroup"></div><button id="nextBtn" class="btn" onclick="nextQuestion()">နောက်တစ်ခု</button></div>
 <div id="pageResult" class="hidden"><h2 style="font-size:22px;color:var(--green)">ဖြေဆိုမှု ပြီးစီးပါပြီ!</h2><p id="resName" style="font-weight:700;font-size:18px"></p><div class="resultScore"><span id="resScore">0</span> / 50</div><p class="small">Result ကို ဒီစာမျက်နှာမှာ ပြသထားပါသည်။</p></div>
 </div>
+
+<div id="publicResults" style="margin:22px auto 0;max-width:720px;background:rgba(255,255,255,.96);border-radius:16px;padding:18px 20px;box-shadow:0 8px 22px rgba(0,0,0,.16);text-align:center">
+  <h2 style="margin:0 0 10px;color:#0288d1">ရမှတ်စစ်ဆေးရန် (Public)</h2>
+  <p class="small">စာမေးပွဲဖြေဆိုခဲ့သော နာမည်ကို ထည့်ပြီး ရမှတ်စစ်ဆေးပါ။</p>
+  <input id="lookupName" type="text" placeholder="စာဖြေသူအမည်">
+  <button class="btn" onclick="lookupPublicResult()">ရမှတ်စစ်မည်</button>
+  <div id="lookupStatus" role="status" style="margin-top:12px;font-weight:600"></div>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyAF1V9gzoq66vsCULVQysiosbZUkUxI3tM",
+  authDomain: "tamar-lann.firebaseapp.com",
+  projectId: "tamar-lann",
+  storageBucket: "tamar-lann.firebasestorage.app",
+  messagingSenderId: "481640631294",
+  appId: "1:481640631294:web:cdb00c873794ef917f8eaf",
+  measurementId: "G-RVY44NKHTS"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const normalize = value => value.trim().toLocaleLowerCase();
+window.lookupPublicResult = async function() {
+  const name = document.getElementById("lookupName").value.trim();
+  const status = document.getElementById("lookupStatus");
+  if (!name) { status.textContent = "နာမည်ထည့်ပါ။"; return; }
+  status.textContent = "စစ်ဆေးနေပါသည်...";
+  try {
+    const q = query(collection(db, "examResults"), where("normalizedName", "==", normalize(name)), orderBy("createdAt", "desc"), limit(10));
+    const snap = await getDocs(q);
+    if (snap.empty) { status.textContent = "ဒီနာမည်နဲ့ ရလဒ်မတွေ့ပါ။"; return; }
+    status.innerHTML = "";
+    snap.forEach(docSnap => {
+      const d = docSnap.data();
+      const row = document.createElement("div");
+      row.style.cssText = "background:#e8f5e9;border-radius:10px;padding:12px;margin-top:8px;color:#1b5e20";
+      const nameLine = document.createElement("div");
+      nameLine.textContent = d.studentName || name;
+      const scoreLine = document.createElement("strong");
+      scoreLine.textContent = "ရမှတ်: " + d.score + " / " + (d.total || 50);
+      row.append(nameLine, scoreLine);
+      status.appendChild(row);
+    });
+  } catch (err) {
+    console.error(err);
+    status.textContent = "ရလဒ်စစ်မရပါ။ Firestore Security Rules / Index ကို စစ်ဆေးပါ။";
+  }
+};
+window.addEventListener("srLQuizFinished", async event => {
+  const result = event.detail;
+  try {
+    await addDoc(collection(db, "examResults"), {
+      studentName: result.studentName,
+      normalizedName: normalize(result.studentName),
+      score: result.score,
+      total: result.total,
+      createdAt: serverTimestamp()
+    });
+  } catch (err) {
+    console.error("Could not save exam result:", err);
+    const p = document.querySelector("#pageResult .small");
+    if (p) p.textContent = "ရမှတ်ကို ဒီစာမျက်နှာမှာ ပြထားသည်။ Cloud မှာ သိမ်းဆည်းမရသေးပါ—Firestore Rules ကို စစ်ဆေးပါ။";
+  }
+});
+</script>
+
 <div id="codeModal" class="modal hidden"><div class="modalbox"><h3 style="color:var(--green)">Creator Code ထည့်ပါ</h3><input id="passcode" type="text" placeholder="Enter Creator Code"><button class="btn" onclick="checkCode()">အတည်ပြုမည်</button><button class="btn" onclick="closeModal()" style="margin-top:8px;background:#888">မလုပ်တော့ပါ</button></div></div>
 <script>
 // Lock until 12 September 2026, 1:00 PM Myanmar Time (UTC+06:30)
@@ -82,6 +149,6 @@ function startQuiz(){studentNameStr=document.getElementById('studentName').value
 function renderQuestion(){const item=questions[currentQ];document.getElementById('qIndex').textContent=`Question ${currentQ+1} of ${questions.length}`;document.getElementById('progressBar').style.width=((currentQ+1)/questions.length*100)+'%';document.getElementById('qText').innerHTML=item.q;const group=document.getElementById('optionsGroup');group.innerHTML='';item.options.forEach((opt,i)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=opt;b.onclick=()=>selectOption(i);group.appendChild(b)});document.getElementById('nextBtn').textContent=currentQ===questions.length-1?'အဖြေတင်မည်':'နောက်တစ်ခု';if(window.MathJax)MathJax.typesetPromise()}
 function selectOption(i){selectedAnswers[currentQ]=i;document.querySelectorAll('.opt').forEach((b,n)=>b.classList.toggle('active',n===i))}
 function nextQuestion(){if(selectedAnswers[currentQ]===undefined){alert('အဖြေတစ်ခုရွေးပါ');return}if(selectedAnswers[currentQ]===questions[currentQ].ans)score++;if(currentQ<questions.length-1){currentQ++;renderQuestion()}else finishQuiz()}
-function finishQuiz(){show('pageResult');document.getElementById('resName').textContent=studentNameStr;document.getElementById('resScore').textContent=score;}
+function finishQuiz(){show('pageResult');document.getElementById('resName').textContent=studentNameStr;document.getElementById('resScore').textContent=score;window.dispatchEvent(new CustomEvent('srLQuizFinished',{detail:{studentName:studentNameStr,score:score,total:questions.length}}));}
 function openModal(){document.getElementById('codeModal').classList.remove('hidden')}function closeModal(){document.getElementById('codeModal').classList.add('hidden')}function checkCode(){if(document.getElementById('passcode').value==='254007'){alert('Creator access confirmed.');closeModal()}else alert('Code မှားနေပါသည်။')}
 </script></body></html>
