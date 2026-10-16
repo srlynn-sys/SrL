@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isTeacherAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "replace-with-your-teacher-email@example.com";
+    }
+    match /examResults/{resultId} {
+      // Public result lookup requires public reads. Anyone can potentially inspect this collection.
+      allow read: if true;
+      // Quiz submission from the public website; client-side scores are not tamper-proof.
+      allow create: if request.resource.data.keys().hasAll(['studentName','normalizedName','score','total','createdAt'])
+        && request.resource.data.studentName is string
+        && request.resource.data.normalizedName is string
+        && request.resource.data.score is int
+        && request.resource.data.score >= 0
+        && request.resource.data.score <= 50
+        && request.resource.data.total == 50;
+      // Only the explicitly allowlisted teacher account can change or delete stored results.
+      allow update, delete: if isTeacherAdmin();
+    }
+  }
+}
