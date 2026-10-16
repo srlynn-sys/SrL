@@ -5,18 +5,28 @@ service cloud.firestore {
       return request.auth != null
         && request.auth.token.email == "thitlinn680@gmail.com";
     }
+
+    function isAllowedStudentCode(code) {
+      return code in ["11PF01", "11PF02"];
+    }
+
     match /examResults/{resultId} {
-      // Public result lookup requires public reads. Anyone can potentially inspect this collection.
+      // Public code lookup; do not store sensitive student information here.
       allow read: if true;
-      // Quiz submission from the public website; client-side scores are not tamper-proof.
-      allow create: if request.resource.data.keys().hasAll(['studentName','normalizedName','score','total','createdAt'])
+
+      // Only the two registered student codes may submit a result.
+      allow create: if request.resource.data.keys().hasAll([
+          'studentCode', 'studentName', 'normalizedName', 'score', 'total', 'createdAt'
+        ])
+        && isAllowedStudentCode(request.resource.data.studentCode)
         && request.resource.data.studentName is string
         && request.resource.data.normalizedName is string
         && request.resource.data.score is int
         && request.resource.data.score >= 0
         && request.resource.data.score <= 50
         && request.resource.data.total == 50;
-      // Only the explicitly allowlisted teacher account can change or delete stored results.
+
+      // Only the teacher account may reset/update or delete stored results.
       allow update, delete: if isTeacherAdmin();
     }
   }
