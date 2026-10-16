@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function isTeacherAdmin() {
       return request.auth != null
-        && request.auth.token.email == "replace-with-your-teacher-email@example.com";
+        && request.auth.token.email == "thitlinn680@gmail.com";
     }
     match /examResults/{resultId} {
       // Public result lookup requires public reads. Anyone can potentially inspect this collection.
