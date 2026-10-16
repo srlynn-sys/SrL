@@ -14,7 +14,7 @@
 <img class="logo" src="https://lh3.googleusercontent.com/d/1ONsM5Dpe9GND9ybYi6chDzH8UW6MxyTG" alt="School Logo" onclick="openModal()">
 <h1>Tamar Lann Federal School</h1><h2>Grade 11 Physics Assessment Test | Instructor: Sr Lynn</h2>
 <div id="pageTimer" class="timer"><div>စာမေးပွဲ စတင်ဖြေဆိုနိုင်ရန် ကျန်ရှိချိန်</div><div id="countdown" class="count">Calculating...</div></div>
-<div id="pageName" class="hidden"><label><b>စာဖြေသူ နာမည် ထည့်သွင်းပါ</b></label><input id="studentName" type="text" placeholder="ဥပမာ - မောင်မောင်"><button class="btn" onclick="startQuiz()">ဖြေဆိုရန်</button></div>
+<div id="pageName" class="hidden"><label><b>ကျောင်းသား Code ရွေးပါ</b></label><select id="studentCode" style="width:100%;padding:12px;margin:8px 0 14px;border:1px solid #ccc;border-radius:8px;font-size:16px"><option value="">Code ရွေးပါ</option><option value="11PF01">11PF01</option><option value="11PF02">11PF02</option></select><label><b>စာဖြေသူ နာမည် ထည့်သွင်းပါ</b></label><input id="studentName" type="text" placeholder="ဥပမာ - မောင်မောင်"><button class="btn" onclick="startQuiz()">ဖြေဆိုရန်</button></div>
 <div id="pageQuiz" class="hidden"><div class="top"><span id="qIndex">Question 1 of 50</span><span>Total Marks: 50</span></div><div class="progress"><div id="progressBar" class="bar"></div></div><div class="qbox"><div id="qText" class="qtext"></div></div><div id="optionsGroup"></div><button id="nextBtn" class="btn" onclick="nextQuestion()">နောက်တစ်ခု</button></div>
 <div id="pageResult" class="hidden"><h2 style="font-size:22px;color:var(--green)">ဖြေဆိုမှု ပြီးစီးပါပြီ!</h2><p id="resName" style="font-weight:700;font-size:18px"></p><div class="resultScore"><span id="resScore">0</span> / 50</div><p class="small">Result ကို ဒီစာမျက်နှာမှာ ပြသထားပါသည်။</p></div>
 </div>
@@ -42,21 +42,21 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const normalize = value => value.trim().toLocaleLowerCase();
 window.lookupPublicResult = async function() {
-  const name = document.getElementById("lookupName").value.trim();
+  const code = document.getElementById("lookupName").value.trim().toUpperCase();
   const status = document.getElementById("lookupStatus");
-  if (!name) { status.textContent = "နာမည်ထည့်ပါ။"; return; }
+  if (!["11PF01","11PF02"].includes(code)) { status.textContent = "11PF01 သို့မဟုတ် 11PF02 ကို ထည့်ပါ။"; return; }
   status.textContent = "စစ်ဆေးနေပါသည်...";
   try {
-    const q = query(collection(db, "examResults"), where("normalizedName", "==", normalize(name)), limit(10));
+    const q = query(collection(db, "examResults"), where("studentCode", "==", code), limit(10));
     const snap = await getDocs(q);
-    if (snap.empty) { status.textContent = "ဒီနာမည်နဲ့ ရလဒ်မတွေ့ပါ။"; return; }
+    if (snap.empty) { status.textContent = "ဒီ Code နဲ့ ရလဒ်မတွေ့ပါ။"; return; }
     status.innerHTML = "";
     snap.forEach(docSnap => {
       const d = docSnap.data();
       const row = document.createElement("div");
       row.style.cssText = "background:#e8f5e9;border-radius:10px;padding:12px;margin-top:8px;color:#1b5e20";
       const nameLine = document.createElement("div");
-      nameLine.textContent = d.studentName || name;
+      nameLine.textContent = (d.studentCode || code) + " — " + (d.studentName || "");
       const scoreLine = document.createElement("strong");
       scoreLine.textContent = "ရမှတ်: " + d.score + " / " + (d.total || 50);
       row.append(nameLine, scoreLine);
@@ -72,6 +72,7 @@ window.addEventListener("srLQuizFinished", async event => {
   try {
     await addDoc(collection(db, "examResults"), {
       studentName: result.studentName,
+      studentCode: result.studentCode,
       normalizedName: normalize(result.studentName),
       score: result.score,
       total: result.total,
@@ -89,7 +90,7 @@ window.addEventListener("srLQuizFinished", async event => {
 <script>
 // Lock until 12 September 2026, 1:00 PM Myanmar Time (UTC+06:30)
 const TARGET_DATE=new Date('2026-09-12T13:00:00+06:30').getTime();
-let currentQ=0,score=0,selectedAnswers=[],studentNameStr='';
+let currentQ=0,score=0,selectedAnswers=[],studentNameStr='',studentCodeStr='';
 const questions=[
 {q:"What is the path followed by a projectile called?",options:["A) Orbit","B) Trajectory","C) Axis","D) Arc length"],ans:1},
 {q:"In projectile motion, assuming air resistance is neglected, what is the acceleration in the horizontal (x) direction?",options:["A) 9.8 m s⁻²","B) −9.8 m s⁻²","C) Zero","D) Variable"],ans:2},
@@ -145,10 +146,10 @@ const questions=[
 function show(id){['pageTimer','pageName','pageQuiz','pageResult'].forEach(x=>document.getElementById(x).classList.add('hidden'));document.getElementById(id).classList.remove('hidden')}
 function updateCountdown(){const diff=TARGET_DATE-Date.now();if(diff<=0){clearInterval(timer);document.getElementById('countdown').textContent='စာမေးပွဲ စတင်နိုင်ပါပြီ';show('pageName');return}const d=Math.floor(diff/86400000),h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60,s=Math.floor(diff/1000)%60;document.getElementById('countdown').textContent=`${d}d ${h}h ${m}m ${s}s`}
 const timer=setInterval(updateCountdown,1000);updateCountdown();
-function startQuiz(){studentNameStr=document.getElementById('studentName').value.trim();if(!studentNameStr){alert('နာမည်ထည့်ပါ');return}currentQ=0;score=0;selectedAnswers=[];show('pageQuiz');renderQuestion()}
+function startQuiz(){studentCodeStr=document.getElementById('studentCode').value;studentNameStr=document.getElementById('studentName').value.trim();if(!["11PF01","11PF02"].includes(studentCodeStr)){alert('ကျောင်းသား Code ကို ရွေးပါ');return}if(!studentNameStr){alert('နာမည်ထည့်ပါ');return}currentQ=0;score=0;selectedAnswers=[];show('pageQuiz');renderQuestion()}
 function renderQuestion(){const item=questions[currentQ];document.getElementById('qIndex').textContent=`Question ${currentQ+1} of ${questions.length}`;document.getElementById('progressBar').style.width=((currentQ+1)/questions.length*100)+'%';document.getElementById('qText').innerHTML=item.q;const group=document.getElementById('optionsGroup');group.innerHTML='';item.options.forEach((opt,i)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=opt;b.onclick=()=>selectOption(i);group.appendChild(b)});document.getElementById('nextBtn').textContent=currentQ===questions.length-1?'အဖြေတင်မည်':'နောက်တစ်ခု';if(window.MathJax)MathJax.typesetPromise()}
 function selectOption(i){selectedAnswers[currentQ]=i;document.querySelectorAll('.opt').forEach((b,n)=>b.classList.toggle('active',n===i))}
 function nextQuestion(){if(selectedAnswers[currentQ]===undefined){alert('အဖြေတစ်ခုရွေးပါ');return}if(selectedAnswers[currentQ]===questions[currentQ].ans)score++;if(currentQ<questions.length-1){currentQ++;renderQuestion()}else finishQuiz()}
-function finishQuiz(){show('pageResult');document.getElementById('resName').textContent=studentNameStr;document.getElementById('resScore').textContent=score;window.dispatchEvent(new CustomEvent('srLQuizFinished',{detail:{studentName:studentNameStr,score:score,total:questions.length}}));}
+function finishQuiz(){show('pageResult');document.getElementById('resName').textContent=studentNameStr;document.getElementById('resScore').textContent=score;window.dispatchEvent(new CustomEvent('srLQuizFinished',{detail:{studentCode:studentCodeStr,studentName:studentNameStr,score:score,total:questions.length}}));}
 function openModal(){document.getElementById('codeModal').classList.remove('hidden')}function closeModal(){document.getElementById('codeModal').classList.add('hidden')}function checkCode(){if(document.getElementById('passcode').value==='254007'){alert('Creator access confirmed.');closeModal()}else alert('Code မှားနေပါသည်။')}
 </script></body></html>
