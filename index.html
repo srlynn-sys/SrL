@@ -20,16 +20,21 @@
 <div id="pageResult" class="hidden"><h2 style="font-size:22px;color:var(--green)">ဖြေဆိုမှု ပြီးစီးပါပြီ!</h2><p id="resName" style="font-weight:700;font-size:18px"></p><div class="resultScore"><span id="resScore">0</span> / 50</div><p class="small">Result ကို ဒီစာမျက်နှာမှာ ပြသထားပါသည်။</p></div>
 </div>
 
-<div id="publicResults" style="margin:22px auto 0;max-width:720px;background:rgba(255,255,255,.96);border-radius:16px;padding:18px 20px;box-shadow:0 8px 22px rgba(0,0,0,.16);text-align:center">
-  <h2 style="margin:0 0 10px;color:#0288d1">ရမှတ်စစ်ဆေးရန် (Public)</h2>
-  <p class="small">ကျောင်းသား Code (11PF01 / 11PF02) ထည့်ပြီး ရမှတ်စစ်ဆေးပါ။</p>
-  <input id="lookupName" type="text" placeholder="11PF01 သို့မဟုတ် 11PF02">
-  <button class="btn" onclick="lookupPublicResult()">ရမှတ်စစ်မည်</button>
-  <div id="lookupStatus" role="status" style="margin-top:12px;font-weight:600"></div>
+<div id="publicResults" class="hidden" style="margin:22px auto 0;width:100%;max-width:720px;background:rgba(255,255,255,.96);border-radius:16px;padding:18px 12px;box-shadow:0 8px 22px rgba(0,0,0,.16);text-align:center">
+  <h2 style="margin:0 0 8px;color:#0288d1">📊 ကျောင်းသားရလဒ်စာရင်း</h2>
+  <p class="small">ကျောင်းသားအားလုံး၏ ရမှတ်စာရင်း</p>
+  <div id="lookupStatus" role="status" style="margin:12px 0;font-weight:600"></div>
+  <div style="overflow-x:auto;width:100%">
+    <table style="width:100%;border-collapse:collapse;text-align:center;font-size:14px;min-width:340px">
+      <thead><tr style="background:#e3f2fd;color:#0d47a1"><th style="padding:10px 6px;border:1px solid #bbdefb">စဉ်</th><th style="padding:10px 6px;border:1px solid #bbdefb">Code</th><th style="padding:10px 6px;border:1px solid #bbdefb;text-align:left">အမည်</th><th style="padding:10px 6px;border:1px solid #bbdefb">ရမှတ်</th></tr></thead>
+      <tbody id="lookupTableBody"><tr><td colspan="4" style="padding:14px;border:1px solid #bbdefb">ရလဒ်များ ရယူနေပါသည်...</td></tr></tbody>
+    </table>
+  </div>
+  <button class="btn" onclick="show('landingOptions')" style="margin-top:16px;background:#607d8b">ပင်မစာမျက်နှာသို့ ပြန်ရန်</button>
 </div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp, limit } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyAF1V9gzoq66vsCULVQysiosbZUkUxI3tM",
   authDomain: "tamar-lann.firebaseapp.com",
@@ -42,30 +47,52 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const normalize = value => value.trim().toLocaleLowerCase();
-window.lookupPublicResult = async function() {
-  const code = document.getElementById("lookupName").value.trim().toUpperCase();
+window.loadPublicResults = async function() {
   const status = document.getElementById("lookupStatus");
-  if (!["11PF01","11PF02"].includes(code)) { status.textContent = "11PF01 သို့မဟုတ် 11PF02 ကို ထည့်ပါ။"; return; }
-  status.textContent = "စစ်ဆေးနေပါသည်...";
+  const tbody = document.getElementById("lookupTableBody");
+  status.textContent = "ရလဒ်များ ရယူနေပါသည်...";
+  tbody.replaceChildren();
   try {
-    const q = query(collection(db, "examResults"), where("studentCode", "==", code), limit(10));
-    const snap = await getDocs(q);
-    if (snap.empty) { status.textContent = "ဒီ Code နဲ့ ရလဒ်မတွေ့ပါ။"; return; }
-    status.innerHTML = "";
-    snap.forEach(docSnap => {
-      const d = docSnap.data();
-      const row = document.createElement("div");
-      row.style.cssText = "background:#e8f5e9;border-radius:10px;padding:12px;margin-top:8px;color:#1b5e20";
-      const nameLine = document.createElement("div");
-      nameLine.textContent = (d.studentCode || code) + " — " + (d.studentName || "");
-      const scoreLine = document.createElement("strong");
-      scoreLine.textContent = "ရမှတ်: " + d.score + " / " + (d.total || 50);
-      row.append(nameLine, scoreLine);
-      status.appendChild(row);
+    const snap = await getDocs(collection(db, "examResults"));
+    const results = snap.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
+    results.sort((a, b) => {
+      const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+      const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+      return tb - ta;
+    });
+    if (!results.length) {
+      status.textContent = "ရလဒ် မရှိသေးပါ။";
+      const row = document.createElement("tr");
+      const cell = document.createElement("td");
+      cell.colSpan = 4;
+      cell.style.cssText = "padding:14px;border:1px solid #bbdefb";
+      cell.textContent = "စာမေးပွဲရလဒ် မရှိသေးပါ။";
+      row.appendChild(cell);
+      tbody.appendChild(row);
+      return;
+    }
+    status.textContent = "စုစုပေါင်း ရလဒ် " + results.length + " ခု";
+    results.forEach((d, index) => {
+      const row = document.createElement("tr");
+      [String(index + 1), d.studentCode || "—", d.studentName || "—", String(d.score ?? "—") + " / " + String(d.total ?? 50)].forEach((value, cellIndex) => {
+        const cell = document.createElement("td");
+        cell.style.cssText = "padding:10px 6px;border:1px solid #d7e3ec;" + (cellIndex === 2 ? "text-align:left;" : "");
+        cell.textContent = value;
+        row.appendChild(cell);
+      });
+      if (index % 2 === 1) row.style.background = "#f7fbff";
+      tbody.appendChild(row);
     });
   } catch (err) {
-    console.error(err);
-    status.textContent = "ရလဒ်စစ်မရပါ။ Firestore Security Rules / Index ကို စစ်ဆေးပါ။";
+    console.error("Could not load public results:", err);
+    status.textContent = "ရလဒ်ရယူမရပါ။ Firestore Security Rules တွင် ဖတ်ရှုခွင့်ရှိမရှိ စစ်ဆေးပါ။";
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = 4;
+    cell.style.cssText = "padding:14px;border:1px solid #bbdefb";
+    cell.textContent = "ရလဒ်စာရင်းကို ယခုမဖော်ပြနိုင်ပါ။";
+    row.appendChild(cell);
+    tbody.appendChild(row);
   }
 };
 window.addEventListener("srLQuizFinished", async event => {
